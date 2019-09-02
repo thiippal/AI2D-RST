@@ -13,15 +13,15 @@ Building on the layout segmentation in AI2D, the AI2D-RST corpus presents a mult
 
 ## Repository structure
 
-`annotator`: The annotator used to create the AI2D-RST corpus.
+`annotator/`: The in-house annotation tool used to create the AI2D-RST corpus.
 
-`dataloader`: A data loader for PyTorch.
+`dataloader/`: A data loader for PyTorch.
 
-`examples`: Example visualisations used in this document.
+`examples/`: Example visualisations used in this document.
 
-`reliability`: Scripts and data for measuring inter-annotator agreement.
+`reliability/`: Scripts and data for measuring inter-annotator agreement.
 
-`utils`: Various utilities and convenience functions for working with AI2D-RST.
+`utils/`: Various utilities and convenience functions for working with AI2D-RST.
 
 ## Download the corpus
 
@@ -29,4 +29,117 @@ Insert download link here.
 
 ## Install the corpus
 
-## Annotation schema
+## JSON annotation schema
+
+The JSON schema for AI2D-RST has three top-level keys, which correspond to the annotation layers. Each of the layers (`grouping`, `connectivity` and `rst`) can be found at the top level, along with the diagram identifier (`id`) defined in the original AI2D dataset:
+
+```
+{
+	"id": "",
+	"grouping": [],
+	"connectivity": {},
+	"rst": []
+}
+```
+The `id` key is a string, `grouping` and `rst` are lists and `connectivity` is a dictionary.
+
+### Grouping
+
+The `grouping` key contains a list with each node as a dictionary, exported from [NetworkX as JIT JSON](https://networkx.github.io/documentation/stable/_modules/networkx/readwrite/json_graph/jit.html):
+
+```
+{
+      "id": "",
+      "name": "",
+      "data": {
+        "kind": ""
+      },
+      "adjacencies": [
+        {
+          "nodeTo": "",
+          "data": {}
+        }
+	]
+}
+```
+
+### Connectivity
+
+The `connectivity` key contains a dictionary with two keys, `nodes` for nodes and `edges` for edges:
+
+```
+{
+    "nodes": [],
+    "edges": []
+}
+```
+
+The `nodes` list contains a list for each node. Each list has two items: the node identifier as a string and a dictionary specifying node attributes:
+
+```
+[
+  "T0",
+  {
+    "kind": "text"
+  }
+]
+```
+
+The `edges` list contains a list for each edge. Each list has three items: the identifier of the source node, the identifier of the target node and a dictionary specifying edge attributes:
+
+```
+[
+  "T0",
+  "T2",
+  {
+    "kind": "directional"
+  }
+]
+```
+
+### RST
+
+The `rst` key contains a list with each node as a dictionary, exported from [NetworkX as JIT JSON](https://networkx.github.io/documentation/stable/_modules/networkx/readwrite/json_graph/jit.html). The nodes may consist of either diagram elements or discourse relations.
+
+For diagram elements, the dictionary is structured as follows:
+
+```
+{
+      "id": "",
+      "name": "",
+      "data": {
+        "kind": ""
+      }
+}
+```
+
+For discourse relations, the dictionary is structured as follows:
+
+```
+{
+      "id": "",
+      "name": "",
+      "data": {
+        "kind": "relation",
+        "nuclei": "T0 T1 T2 T3 T4",
+        "rel_name": "",
+        "id": ""
+      },
+      "adjacencies": []
+}
+```
+
+The nuclei are listed as a single string, with each nucleus separated from the others with a whitespace.
+
+The `adjacencies` key holds a list of dictionary objects, each of which represents adjacent elements:
+
+```
+{
+    "nodeTo": "",
+    "data": {
+     "kind": ""
+    }
+}
+```
+
+`kind` can either be nucleus or satellite in these instances.
