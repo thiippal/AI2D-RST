@@ -29,6 +29,36 @@ Insert download link here.
 
 ## Install the corpus
 
+1. Download the [Allen Institute for Artificial Intelligence Diagrams (AI2D) dataset](https://allenai.org/plato/diagram-understanding/).
+
+2. Unzip the AI2D dataset. This will give you the following directory structure:
+
+```
+ai2d/
+|--- annotations/
+|- categories.json
+|--- images/
+|- license.txt
+|- questions/
+|- README.txt
+```
+
+3. Download the [AI2D-RST dataset](http://www.link.here).
+
+4. Unzip the AI2D-RST dataset into the `ai2d/` folder. The directory structure should then look like this:
+
+```
+ai2d/
+|--- ai2d_rst/
+|--- annotations/
+|- categories.json
+|- categories_ai2d-rst.json
+|--- images/
+|- license.txt
+|- questions/
+|- README.txt
+```
+
 ## JSON annotation schema
 
 The JSON schema for AI2D-RST has three top-level keys, which correspond to the annotation layers. Each of the layers (`grouping`, `connectivity` and `rst`) can be found at the top level, along with the diagram identifier (`id`) defined in the original AI2D dataset:
