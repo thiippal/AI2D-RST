@@ -1,5 +1,16 @@
 # Evaluating the reliability of the AI2D-RST annotation
 
+This directory contains scripts and data for measuring the reliability of the AI2D-RST annotation schema.
+
+The following table summarizes the results of inter-annotator agreement measures among five annotators.
+
+| Annotation layer | Number of samples | Fleiss' kappa |
+| ---------------- | -------------: | -------------: |
+| Grouping         | 256 | 0.836 |
+| Macro-grouping   | 119 | 0.784 |
+| Connectivity     | 239 | 0.878 |
+| Discourse structure | 227  | 0.733 |
+
 ## Directory structure
 
 | Directory or file | Description |
