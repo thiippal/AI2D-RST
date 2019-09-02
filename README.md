@@ -6,6 +6,8 @@
 
 `dataloader`: A data loader for PyTorch.
 
+`examples`: Example visualisations used in this document.
+
 `utils`: Various utilities and convenience functions for working with AI2D-RST.
 
 ## Download the corpus
