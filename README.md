@@ -1,5 +1,18 @@
 # AI2D-RST: A multimodal corpus of 1000 primary school science diagrams
 
+## Release checklist
+
+- [x] Annotator
+- [ ] Data loader
+- [ ] Docstrings
+- [ ] Download links
+- [x] JSON schema
+- [x] Reliabilility
+- [ ] Utils
+
+
+## Description
+
 This repository contains resources related to AI2D-RST, a multimodal corpus of 1000 English-language diagrams that represent topics in primary school natural science, such as food webs, life cycles, moon phases and human physiology. The corpus is based on the [Allen Institute for Artificial Intelligence Diagrams (AI2D) dataset](https://allenai.org/plato/diagram-understanding/), a collection of diagrams with crowd-sourced descriptions. 
 
 Building on the layout segmentation in AI2D, the AI2D-RST corpus presents a multi-layer annotation schema that provides a rich, graph-based description of their structure. The data and its description are introduced below using a single diagram (#2185 in the corpus) as an example.
