@@ -4,7 +4,7 @@ This repository contains resources related to AI2D-RST, a multimodal corpus of 1
 
 Building on the layout segmentation in AI2D, the AI2D-RST corpus presents a multi-layer annotation schema that provides a rich, graph-based description of their structure. Annotated by trained experts, the layers describe
 
-| Layer | Example |
+| Layer | Example (click to enlarge) |
 |:----- | :------- |
 | **Diagram image**: The AI2D dataset contains 4907 diagrams scraped from Google Image Search by using chapter titles in primary school science textbooks (for ages 6–11) as search terms. The AI2D-RST corpus contains a subset of 1000 diagrams randomly sampled from AI2D. | <img src="examples/2185.png" width=300> | 
 | **Layout segmentation** | <img src="examples/segmentation_2185.png" width=300> |
