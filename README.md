@@ -2,8 +2,14 @@
 
 ## Repository structure
 
-`annotator`: Contains the annotator used for creating the AI2D-RST corpus.
+`annotator`: The annotator used to create the AI2D-RST corpus.
 
-`dataloader`: Contains a data loader for PyTorch.
+`dataloader`: A data loader for PyTorch.
 
-`utils`: Contains various utilities and convenience functions for processing AI2D-RST.
+`utils`: Various utilities and convenience functions for working with AI2D-RST.
+
+## Download the corpus
+
+Insert download link here.
+
+## Annotation schema
