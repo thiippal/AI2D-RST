@@ -6,16 +6,9 @@ Building on the layout segmentation in AI2D, the AI2D-RST corpus presents a mult
 
 1. **Diagram image**: The AI2D dataset contains 4907 diagrams scraped from Google Image Search by using chapter titles in primary school science textbooks (for ages 6–11) as search terms. The AI2D-RST corpus contains a subset of 1000 diagrams randomly sampled from AI2D. <br> <img src="examples/2185.png" width=300>
 2. **Layout segmentation**: The AI2D dataset contains segmentations for four types of elements: blobs (images, line art, photographs, etc.), text blocks, arrows and arrowheads. AI2D-RST uses blobs, text blocks and arrows, which provide the foundation for the annotation. <br> <img src="examples/segmentation_2185.png" width=300>
-3. **Grouping**: <br> <img src="examples/layout_2185.png" width=300> 
-4. **Connectivity**: <br> <img src="examples/connectivity_2185.png" width=300>
-5. **Discourse structure**: <br> <img src="examples/rst_2185.png" width=300> 
-
-
-  1. grouping of diagram elements into perceptual units
-  2. connections set up by diagrammatic elements such as arrows and lines
-  3. discourse relations between diagram elements, described using [Rhetorical Structure Theory (RST)](http://sfu.ca/rst/), an established theory of text organisation and coherence
-
-Each annotation layer in AI2D-RST is represented using a graph.
+3. **Grouping**: The grouping layer captures perceptual groups of diagram elements at two levels. The first level, grouping, describes how diagram elements form wholes that are likely to be perceived as belonging together. The principles of grouping correspond to some extent to Gestalt principles of perception. <br> <img src="examples/layout_2185.png" width=300> 
+4. **Connectivity**: The connectivity layer describes connections between diagram elements or their groups, which are provided visually using diagrammatic elements such as arrows and lines. Connectivity is represented using a mixed graph, which means that the graph may feature both undirected and directed edges. The graph may also feature cycles. <br> <img src="examples/connectivity_2185.png" width=300>
+5. **Discourse structure**: The discourse structure layer describes discourse relations between diagram elements using [Rhetorical Structure Theory (RST)](http://sfu.ca/rst/), an established theory of text organisation and coherence<br> <img src="examples/rst_2185.png" width=300> 
 
 
 
