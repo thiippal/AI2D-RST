@@ -25,6 +25,6 @@ Building on the layout segmentation in AI2D, the AI2D-RST corpus presents a mult
 
 Insert download link here.
 
-## Installation
+## Install the corpus
 
 ## Annotation schema
