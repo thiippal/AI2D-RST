@@ -19,6 +19,8 @@ See the docstrings in each file for instructions on how to use the scripts.
 | `evaluate_agreement_rst.py` | Script for annotating discourse structure as a part of inter-annotator agreement measures. |
 | `examine_annotation.py` | Script for printing out the Pandas DataFrame containing AI2D-RST annotation. |
 | `extract_full_annotation.py` | Script for extracting AI2D annotation from JSON format. |
-| `sample_annotation.py` | Script for sampling AI2D-RST annotation for inter-annotator agreement measures. |
-| `visualize_ai2d_json.py` | Script for visualizing the annotation in AI2D JSON files. |
-| `visualize_annotation.py` | Script for visualizing AI2D-RST annotation in Pandas DataFrames. |
+| `sample_annotation.py`* | Script for sampling AI2D-RST annotation for inter-annotator agreement measures. |
+| `visualize_ai2d_json.py`* | Script for visualizing the annotation in AI2D JSON files. |
+| `visualize_annotation.py`* | Script for visualizing AI2D-RST annotation in Pandas DataFrames. |
+
+TODO: * needs docstrings!
