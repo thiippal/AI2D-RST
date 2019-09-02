@@ -1,4 +1,4 @@
-# Measuring inter-annotator agreement on AI2D-RST
+# Evaluating the reliability of the AI2D-RST annotation
 
 ## Directory structure
 
