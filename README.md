@@ -35,7 +35,7 @@ The JSON schema for AI2D-RST has three top-level keys, which correspond to the a
 
 ```
 {
-	"id": "",
+	"id": "1189",
 	"grouping": [],
 	"connectivity": {},
 	"rst": []
@@ -49,14 +49,14 @@ The `grouping` key contains a list with each node as a dictionary, exported from
 
 ```
 {
-      "id": "",
-      "name": "",
+      "id": "B0",
+      "name": "B0",
       "data": {
-        "kind": ""
+        "kind": "blobs"
       },
       "adjacencies": [
         {
-          "nodeTo": "",
+          "nodeTo": "I0",
           "data": {}
         }
 	]
@@ -99,16 +99,18 @@ The `edges` list contains a list for each edge. Each list has three items: the i
 
 ### RST
 
-The `rst` key contains a list with each node as a dictionary, exported from [NetworkX as JIT JSON](https://networkx.github.io/documentation/stable/_modules/networkx/readwrite/json_graph/jit.html). The nodes may consist of either diagram elements or discourse relations.
+The `rst` key contains a list with each node as a dictionary, exported from [NetworkX as JIT JSON](https://networkx.github.io/documentation/stable/_modules/networkx/readwrite/json_graph/jit.html). 
+
+The nodes may stand for either diagram elements or discourse relations.
 
 For diagram elements, the dictionary is structured as follows:
 
 ```
 {
-      "id": "",
-      "name": "",
+      "id": "B0",
+      "name": "B0",
       "data": {
-        "kind": ""
+        "kind": "blobs"
       }
 }
 ```
@@ -117,29 +119,40 @@ For discourse relations, the dictionary is structured as follows:
 
 ```
 {
-      "id": "",
-      "name": "",
+      "id": "UTDA79",
+      "name": "UTDA79",
       "data": {
         "kind": "relation",
         "nuclei": "T0 T1 T2 T3 T4",
-        "rel_name": "",
-        "id": ""
+        "rel_name": "joint",
+        "id": "UTDA79"
       },
       "adjacencies": []
 }
 ```
 
-The nuclei are listed as a single string, with each nucleus separated from the others with a whitespace.
+The keys of the `data` dictionary depend on the type of the discourse relation. Multinuclear relations contain the key `nuclei`, whose value is a list of identifiers separated by whitespace. Mononuclear relations, in turn, contain keys `nucleus` and `satellites`, as exemplified below:
 
-The `adjacencies` key holds a list of dictionary objects, each of which represents adjacent elements:
+```
+    {
+      "id": "RXG74P",
+      "name": "RXG74P",
+      "data": {
+        "kind": "relation",
+        "nucleus": "B0",
+        "satellites": "UTDA79",
+        "rel_name": "elaboration",
+        "id": "RXG74P"
+      }
+```
+
+In both cases, the `adjacencies` key holds a list of dictionaries, which define the edges:
 
 ```
 {
-    "nodeTo": "",
-    "data": {
-     "kind": ""
-    }
+	"nodeTo": "T0",
+	"data": {
+	 "kind": "nucleus"
+	 }
 }
 ```
-
-`kind` can either be nucleus or satellite in these instances.
