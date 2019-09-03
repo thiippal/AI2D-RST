@@ -6,7 +6,7 @@
 - [x] Data loader
 - [x] Docstrings
 - [ ] Download links
-- [ ] Guide
+- [x] Guide
 - [x] JSON schema
 - [x] Reliabilility
 - [ ] Utils
