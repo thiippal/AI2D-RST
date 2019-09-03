@@ -4,7 +4,7 @@
 
 - [x] Annotator
 - [ ] Data loader
-- [ ] Docstrings
+- [x] Docstrings
 - [ ] Download links
 - [ ] Guide
 - [x] JSON schema
