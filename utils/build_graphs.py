@@ -1,5 +1,4 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 import argparse
 import json
 import glob
