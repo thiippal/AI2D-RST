@@ -9,7 +9,7 @@
 - [x] Guide
 - [x] JSON schema
 - [x] Reliabilility
-- [ ] Utils
+- [x] Utils
 
 
 ## Description
