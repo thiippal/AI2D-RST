@@ -2,9 +2,9 @@
 
 This directory contains the in-house annotation tool used to create the AI2D-RST dataset.
 
-See the docstrings in each file for instructions on how to use the scripts.
+Detailed instructions for using the annotator are provided in the [AI2D-RST Annotation Guide](../guide/).
 
-Alternatively, you can execute a script with the `-h/--help` flag for a description of the required inputs, e.g. `python annotate.py -h`.
+See the docstrings in each file for instructions on how to use the scripts. Alternatively, you can execute a script with the `-h/--help` flag for a description of the required inputs, e.g. `python annotate.py -h`.
 
 ## Directory structure
 
@@ -21,8 +21,6 @@ Alternatively, you can execute a script with the `-h/--help` flag for a descript
 | `evaluate_agreement_rst.py` | Script for annotating discourse structure as a part of inter-annotator agreement measures. |
 | `examine_annotation.py` | Script for printing out the Pandas DataFrame containing AI2D-RST annotation. |
 | `extract_full_annotation.py` | Script for extracting AI2D annotation from JSON format. |
-| `sample_annotation.py`* | Script for sampling AI2D-RST annotation for inter-annotator agreement measures. |
-| `visualize_ai2d_json.py`* | Script for visualizing the annotation in AI2D JSON files. |
-| `visualize_annotation.py`* | Script for visualizing AI2D-RST annotation in Pandas DataFrames. |
-
-TODO: * needs docstrings!
+| `sample_annotation.py` | Script for sampling AI2D-RST annotation for inter-annotator agreement measures. |
+| `visualize_ai2d_json.py` | Script for visualizing the annotation in AI2D JSON files. |
+| `visualize_annotation.py` | Script for visualizing AI2D-RST annotation in Pandas DataFrames. |
