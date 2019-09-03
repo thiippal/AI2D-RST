@@ -4,6 +4,8 @@ This directory contains the in-house annotation tool used to create the AI2D-RST
 
 See the docstrings in each file for instructions on how to use the scripts.
 
+Alternatively, you can execute a script with the `-h/--help` flag for a description of the required inputs, e.g. `python annotate.py -h`.
+
 ## Directory structure
 
 | Directory or file | Description |
