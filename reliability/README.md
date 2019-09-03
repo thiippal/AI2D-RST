@@ -11,6 +11,8 @@ The following table summarizes the results of inter-annotator agreement measures
 | Connectivity     | 239 | 0.878 |
 | Discourse structure | 227  | 0.733 |
 
+To reproduce the results for inter-annotator agreement measures, execute the R scripts in this directory, e.g. `Rscript measure_ia_group.r`.
+
 ## Directory structure
 
 | Directory or file | Description |
