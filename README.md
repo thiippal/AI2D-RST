@@ -59,7 +59,7 @@ ai2d/
 
 3. Download the [AI2D-RST dataset](http://www.link.here).
 
-4. Unzip the AI2D-RST dataset into the `ai2d/` folder. The directory structure should then look like this:
+4. Unzip the AI2D-RST dataset. Place the `categories_ai2d-rst.json` file and the `ai2d-rst` directory into the `ai2d/` directory. The directory structure for `ai2d/` should then look like this:
 
 ```
 ai2d/
