@@ -2,7 +2,7 @@
 
 This directory contains scripts and data for measuring the reliability of the AI2D-RST annotation schema.
 
-The following table summarizes the results of inter-annotator agreement measures among five annotators.
+The following table summarizes the results of inter-annotator agreement measures between five annotators.
 
 | Annotation layer | Number of samples | Fleiss' kappa |
 | ---------------- | -------------: | -------------: |
