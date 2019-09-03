@@ -27,10 +27,11 @@ Building on the layout segmentation in AI2D, the AI2D-RST corpus presents a mult
 
 `utils/`: Convenience functions for working with AI2D-RST.
 
+`requirements.txt`: Defines the Python dependencies required by this repository for quick installation using `pip`.
+
 ## Download the corpus
 
-Insert download link here.
-
+Click [here](http://www.helsinki.fi/~thiippal/data/ai2d-rst_v1.zip) to download the AI2D-RST dataset.
 ## Install the corpus
 
 1. Download the [Allen Institute for Artificial Intelligence Diagrams (AI2D) dataset](https://allenai.org/plato/diagram-understanding/).
