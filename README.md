@@ -200,3 +200,7 @@ In both cases, the `adjacencies` key holds a list of dictionaries, which define 
 	 }
 }
 ```
+
+## Contact information
+
+Questions? Open an issue on GitHub or e-mail the maintainer at tuomo dot hiippala @ helsinki dot fi.
