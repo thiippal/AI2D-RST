@@ -8,11 +8,13 @@ Usage:
     python visualize_ai2d_json.py -a annotation/ -i images/
     
 Arguments:
-    -a/--annotation: Path to the directory containing the AI2D annotation in JSON files.
+    -a/--annotation: Path to the directory containing the AI2D annotation in
+                    JSON files.
     -o/--output: Path to the directory with AI2D images.
 
 Optional arguments:
-	-s/--save: Save segmentation / diagram parse graph screenshots for each diagram.	
+    -s/--save: Save segmentation / diagram parse graph screenshots for each
+                diagram.
 
 Returns:
     Draws the AI2D annotation using OpenCV.
@@ -34,10 +36,10 @@ import pandas as pd
 ap = argparse.ArgumentParser()
 
 # Define arguments
-ap.add_argument("-a", "--annotation", required=True, 
-				help="Path to the directory or file with AI2D annotation.")
-ap.add_argument("-i", "--images", required=True, 
-				help="Path to directory with AI2D image files.")
+ap.add_argument("-a", "--annotation", required=True,
+                help="Path to the directory or file with AI2D annotation.")
+ap.add_argument("-i", "--images", required=True,
+                help="Path to directory with AI2D image files.")
 ap.add_argument("-s", "--save", required=False, action='store_true',
                 help="Save screenshots for each diagram.")
 

@@ -26,12 +26,13 @@ import pandas as pd
 ap = argparse.ArgumentParser()
 
 # Define arguments
-ap.add_argument("-a", "--annotation", required=True, 
-				help="Path to the diretory with AI2D JSON files.")
+ap.add_argument("-a", "--annotation", required=True,
+                help="Path to the directory with AI2D JSON files.")
 ap.add_argument("-i", "--images", required=True,
-				help="Path to the directory with AI2D images.)
+                help="Path to the directory with AI2D images.")
 ap.add_argument("-o", "--output", required=True,
-				help="Path to the file in which the extracted annotation is stored.)
+                help="Path to the file in which the extracted annotation is "
+                     "stored.")
 
 # Parse arguments
 args = vars(ap.parse_args())
@@ -63,7 +64,6 @@ for (ann_root, ann_dirs, ann_files) in os.walk(ann_path):
 
             # Check that both exist:
             if not os.path.exists(img_path) or not os.path.exists(json_path):
-
                 print("[ERROR] {} or {} is missing. Skipping diagram.".format(
                     img_path, json_path
                 ))

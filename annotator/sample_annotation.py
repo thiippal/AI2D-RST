@@ -10,11 +10,13 @@ Usage:
 Arguments:
     -a/--annotation: Path to a pandas DataFrame with the original annotation
                      extracted from the AI2D dataset.
-    -o/--output: Path to the output file, in which the sampled annotation is stored.
-    -m/--mode: A string indicating the annotation layer which is to be sampled. Valid
-    		   values include 'grouping', 'macro', 'connectivity' and 'rst'.
-    -p/--p_sample: The percentage of annotations to sample as a float, e.g. to sample 10%
-    			   of the annotation, enter 0.1.	
+    -o/--output: Path to the output file, in which the sampled annotation is
+                stored.
+    -m/--mode: A string indicating the annotation layer which is to be sampled.
+                Valid values include 'grouping', 'macro', 'connectivity' and
+                'rst'.
+    -p/--p_sample: The percentage of annotations to sample as a float, e.g. to
+                sample 10% of the annotation, enter 0.1.
 
 Returns:
     A pandas DataFrame containing a Diagram object for each diagram.
@@ -86,7 +88,6 @@ def resolve_id(identifier, relations):
 
             # If the element is a group identifier, pop the item from list
             if len(e) == 6 and e not in rst_dict.keys():
-
                 temp_elements.pop(i)
 
         # Assign the updated list to the variable elements
@@ -101,15 +102,15 @@ ap = argparse.ArgumentParser()
 
 # Define arguments
 ap.add_argument("-a", "--annotation", required=True,
-				help="Path to the pandas DataFrame with AI2D annotation.")
+                help="Path to the pandas DataFrame with AI2D annotation.")
 ap.add_argument("-o", "--output", required=True,
-				help="Path to the file in which the sampled annotation is stored.")
+                help="Path to the file in which the sampled annotation is stored.")
 ap.add_argument("-m", "--mode", required=True,
-				help="A string indicating which annotation to sample. Valid values are: "
-				"'grouping', 'macro', 'connectivity' and 'rst'.")
+                help="A string indicating which annotation to sample. Valid values are: "
+                     "'grouping', 'macro', 'connectivity' and 'rst'.")
 ap.add_argument("-p", "--p_sample", required=True, type=float,
-				help="The percentage of annotations to sample as a float, e.g. to sample "
-				"10% enter 0.1 as the value.")
+                help="The percentage of annotations to sample as a float, e.g. to sample "
+                     "10% enter 0.1 as the value.")
 
 # Parse arguments
 args = vars(ap.parse_args())
@@ -251,7 +252,6 @@ if mode == 'connectivity':
 
             # Check sources and targets against the grouping graph nodes
             if e[0] not in group_nodes.keys():
-
                 # Print status
                 print("[ERROR] Source {} not in grouping graph for {}. "
                       "Skipping ...".format(e[0], row['image_name']))
@@ -259,7 +259,6 @@ if mode == 'connectivity':
                 continue
 
             if e[1] not in group_nodes.keys():
-
                 # Print status
                 print("[ERROR] Target {} not in grouping graph for {}. "
                       "Skipping ...".format(e[1], row['image_name']))
@@ -347,7 +346,6 @@ if mode == 'rst':
 
                     # Check and replace IDs for RST relations
                     if len(n) == 6 and n in rst_dict.keys():
-
                         # Get replacement IDs
                         replacement = resolve_id(n, rst_dict)
 
@@ -356,7 +354,6 @@ if mode == 'rst':
 
                     # Check and replace IDs for groups
                     if len(n) == 6 and n in group_dict.keys():
-
                         # Convert undirected graph to directed graph for access
                         # to the successors method, which is needed below.
                         layout_digraph = grouping_graph.copy().to_directed()
@@ -389,7 +386,6 @@ if mode == 'rst':
 
                     # Check and replace IDs for RST relations
                     if len(n) == 6 and n in rst_dict.keys():
-
                         # Get replacement IDs
                         replacement = resolve_id(n, rst_dict)
 
@@ -398,7 +394,6 @@ if mode == 'rst':
 
                     # Check and replace IDs for groups
                     if len(n) == 6 and n in group_dict.keys():
-
                         # Convert undirected graph to directed graph for access
                         # to the successors method, which is needed below.
                         layout_digraph = grouping_graph.copy().to_directed()
@@ -420,7 +415,6 @@ if mode == 'rst':
 
                     # Get identifiers and limit search to RST relations for now
                     if len(s) == 6 and s in rst_dict.keys():
-
                         # Get replacement IDs
                         replacement = resolve_id(s, rst_dict)
 
@@ -429,7 +423,6 @@ if mode == 'rst':
 
                     # Check and replace IDs for groups
                     if len(s) == 6 and s in group_dict.keys():
-
                         # Convert undirected graph to directed graph for access
                         # to the successors method, which is needed below.
                         layout_digraph = grouping_graph.copy().to_directed()
@@ -451,14 +444,12 @@ if mode == 'rst':
 
             # Replace split nodes with valid identifiers
             if nuclei is not None:
-
                 # Perform replacement using a list comprehension
                 nuclei = ' '.join([n.split('.')[0] if '.' in n
                                    else n for n in nuclei.split()])
 
             # If the relation is asymmetric, perform replacement for n + s
             if nuclei is None:
-
                 # Perform replacement using a list comprehension
                 nucleus = ' '.join([n.split('.')[0] if '.' in n
                                     else n for n in nucleus.split()])
@@ -521,7 +512,6 @@ if mode == 'macro':
 
         # Loop over the dictionary of macro-groups
         for k, v in mgroup_dict.items():
-
             # Define variables for the macro-group
             node_id = k
             node_type = v['kind']

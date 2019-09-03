@@ -35,7 +35,6 @@ import numpy as np
 import os
 import pandas as pd
 
-
 # Set up the argument parser
 ap = argparse.ArgumentParser()
 
@@ -49,8 +48,8 @@ ap.add_argument("-s", "--similar_to", required=False, type=int,
                      "Limits the visualisation to examples similar to this "
                      "diagram.")
 ap.add_argument("-c", "--categories", required=False,
-				help="Path to the AI2D categories.json file. Needed for option "
-				"-s/--similar_to.")
+                help="Path to the AI2D categories.json file. Needed for option "
+                     "-s/--similar_to.")
 ap.add_argument("-o", "--only", required=False, type=int,
                 help="An AI2D diagram identifier as an integer (e.g. 1132). "
                      "Shows this diagram only.")
@@ -66,11 +65,9 @@ images_path = args['images']
 
 # Verify the input paths, print error and exit if not found
 if not Path(ann_path).exists():
-
     exit("[ERROR] Cannot find {}. Check the input to -a!".format(ann_path))
 
 if not Path(images_path).exists():
-
     exit("[ERROR] Cannot find {}. Check the input to -i!".format(images_path))
 
 # Open the input file
@@ -85,33 +82,32 @@ if args['similar_to']:
     # Open the JSON file for AI2D categories
     with open(args['categories']) as f:
 
-            # Load category information
-            categories = json.load(f)
+        # Load category information
+        categories = json.load(f)
 
-            # Fetch the requested category from the dictionary
-            try:
-                requested_cat = categories[requested_id]
+        # Fetch the requested category from the dictionary
+        try:
+            requested_cat = categories[requested_id]
 
-                print("[INFO] Finding examples of category '{}' ...".format(
-                    requested_cat))
+            print("[INFO] Finding examples of category '{}' ...".format(
+                requested_cat))
 
-            # Catch error thrown by erroneous key and exit
-            except KeyError:
+        # Catch error thrown by erroneous key and exit
+        except KeyError:
 
-                exit("[ERROR] {} is not a valid identifier.".format(
-                    requested_id))
+            exit("[ERROR] {} is not a valid identifier.".format(
+                requested_id))
 
-            # Fetch the categories for diagrams in the DataFrame
-            df['category'] = df['image_name'].apply(lambda x: categories[x])
+        # Fetch the categories for diagrams in the DataFrame
+        df['category'] = df['image_name'].apply(lambda x: categories[x])
 
-            # Filter the DataFrame for requested diagram types
-            df = df.loc[df['category'] == requested_cat]
+        # Filter the DataFrame for requested diagram types
+        df = df.loc[df['category'] == requested_cat]
 
-            # If there are no results to display, exit with an error message
-            if len(df) == 0:
-
-                exit("[ERROR] No examples of category '{}' found.".format(
-                    requested_cat))
+        # If there are no results to display, exit with an error message
+        if len(df) == 0:
+            exit("[ERROR] No examples of category '{}' found.".format(
+                requested_cat))
 
 # Check if the user has requested visualizing a single diagram
 if args['only']:
@@ -142,7 +138,7 @@ for i, (ix, row) in enumerate(df.iterrows(), start=1):
 
     # Join with path to image directory with current filename
     image_path = os.path.join(images_path, row['image_name'])
-    
+
     # Print status message
     print("[INFO] Now processing row {}/{} ({}) ...".format(i,
                                                             len(df),
@@ -194,7 +190,6 @@ for i, (ix, row) in enumerate(df.iterrows(), start=1):
 
             # Print relations currently defined in the graph
             for k, v in relation_ix.items():
-
                 print("{}: {}".format(k,
                                       diagram.rst_graph.nodes[v]['rel_name']))
 
@@ -220,7 +215,6 @@ for i, (ix, row) in enumerate(df.iterrows(), start=1):
 
         # If comments have been provided, print them out
         if len(diagram.comments) > 0:
-
             # Print header for comments
             print("\nCurrent comments \n---")
 
@@ -233,7 +227,6 @@ for i, (ix, row) in enumerate(df.iterrows(), start=1):
 
         # If export has been requested, export all graphs:
         if args['export']:
-
             # Export DOT graph for grouping graph
             process_command('export', 'layout', diagram,
                             diagram.layout_graph.copy())
@@ -266,7 +259,6 @@ for i, (ix, row) in enumerate(df.iterrows(), start=1):
 
         # Wait, quit if q is pressed
         if cv2.waitKey(0) == ord('q'):
-
             exit()
 
         # Destroy window
