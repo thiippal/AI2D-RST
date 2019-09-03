@@ -3,7 +3,7 @@
 ## Release checklist
 
 - [x] Annotator
-- [ ] Data loader
+- [x] Data loader
 - [x] Docstrings
 - [ ] Download links
 - [ ] Guide
