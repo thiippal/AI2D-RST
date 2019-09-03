@@ -271,22 +271,28 @@ def load_ai2d_rst(data):
     grouping_graph = nx.jit_graph(grouping_dict_from_json,
                                   create_using=nx.Graph())
 
-    # Create connectivity graph manually
-    connectivity_graph = nx.MultiDiGraph()
+    # Check if connectivity annotation exists
+    if conn_dict_from_json is not None:
 
-    # Load nodes and edges
-    nodes = conn_dict_from_json['nodes']
-    edges = conn_dict_from_json['edges']
+        # Create connectivity graph manually
+        connectivity_graph = nx.MultiDiGraph()
 
-    # Add nodes manually to the connectivity graph
-    for node in nodes:
+        # Load nodes and edges
+        nodes = conn_dict_from_json['nodes']
+        edges = conn_dict_from_json['edges']
 
-        connectivity_graph.add_node(node[0], kind=node[1]['kind'])
+        # Add nodes manually to the connectivity graph
+        for node in nodes:
 
-    # Add edges manually to the connectivity graph
-    for edge in edges:
+            connectivity_graph.add_node(node[0], kind=node[1]['kind'])
 
-        connectivity_graph.add_edge(edge[0], edge[1], kind=edge[2]['kind'])
+        # Add edges manually to the connectivity graph
+        for edge in edges:
+
+            connectivity_graph.add_edge(edge[0], edge[1], kind=edge[2]['kind'])
+
+    else:
+        connectivity_graph = None
 
     # Create the RST graph using the nx.jit_graph function
     rst_graph = nx.jit_graph(rst_dict_from_json, create_using=nx.DiGraph())

@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
 """
-This script defines a small Graph Convolutional Network (GCN), which is the trained using
-the AI2D/AI2D-RST annotations to classify diagrams to different macro-groups identified
-in the AI2D-RST annotation.
+This script defines a small Graph Convolutional Network (GCN), which is the
+trained using the AI2D/AI2D-RST annotations to classify diagrams to different
+macro-groups identified in the AI2D-RST annotation.
 
 The script also demonstrates the usage of the AI2D-RST dataloader for PyTorch.
 
 Usage:
-    python train_gcn.py -c categories.json -i images/ -a ai2d_json/ -ar ai2d_rst_json/
+    python train_gcn.py -c categories.json -i images/ -a ai2d_json/
+    -ar ai2d_rst_json/
     
 Arguments:
     -c/--categories: Path to the *AI2D-RST* categories JSON file.
@@ -17,7 +18,8 @@ Arguments:
     -ar/--ai2d_rst_json: Path to the directory with AI2D-RST JSON files.
     
 Returns:
-    Trains the GCN using Deep Graph Library (DGL) and prints out a classification report.
+    Trains the GCN using Deep Graph Library (DGL) and prints out a
+    classification report.
 """
 
 # Import packages
@@ -41,13 +43,13 @@ ap = argparse.ArgumentParser()
 
 # Define arguments
 ap.add_argument("-c", "--categories", required=True,
-				help="Path to the AI2D-RST categories_ai2d-rst.json file.")
+                help="Path to the AI2D-RST categories_ai2d-rst.json file.")
 ap.add_argument("-i", "--images", required=True,
-				help="Path to the directory containing AI2D images.")
+                help="Path to the directory containing AI2D images.")
 ap.add_argument("-a", "--ai2d", required=True,
-				help="Path to the directory containing AI2D JSON files.")
+                help="Path to the directory containing AI2D JSON files.")
 ap.add_argument("-ar", "--ai2d_rst", required=True,
-				help="Path to the directory containing AI2D-RST JSON files.")
+                help="Path to the directory containing AI2D-RST JSON files.")
 
 # Parse arguments
 args = vars(ap.parse_args())
@@ -58,7 +60,7 @@ img_path = args['images']
 ai2d_path = args['ai2d']
 ai2d_rst_path = args['ai2d_rst']
 
-# Define layers and message-passing functions for the Graph Convolutional Network
+# Define layers and message-passing functions for Graph Convolutional Network
 
 # Sends a message of node feature h.
 msg = fn.copy_src(src='h', out='m')
@@ -73,6 +75,7 @@ def reduce(nodes):
 
 class NodeApplyModule(nn.Module):
     """Update the node feature hv with ReLU(Whv+b)."""
+
     def __init__(self, in_feats, out_feats, activation):
         super(NodeApplyModule, self).__init__()
         self.linear = nn.Linear(in_feats, out_feats)
@@ -81,7 +84,7 @@ class NodeApplyModule(nn.Module):
     def forward(self, node):
         h = self.linear(node.data['h'])
         h = self.activation(h)
-        return {'h' : h}
+        return {'h': h}
 
 
 class GCN(nn.Module):
@@ -103,7 +106,7 @@ class Classifier(nn.Module):
 
         self.gcn1 = GCN(in_dim, hidden_dim, F.relu)
         self.gcn2 = GCN(hidden_dim, hidden_dim, F.relu)
-    
+
         self.classify = nn.Linear(hidden_dim, n_classes)
 
     def forward(self, g, features):
@@ -113,7 +116,7 @@ class Classifier(nn.Module):
         g.ndata['h'] = x
 
         hg = dgl.mean_nodes(g, 'h')
-        
+
         return self.classify(hg)
 
 
@@ -146,8 +149,8 @@ ids = list(labels.keys())
 labels = list(labels.values())
 
 # Create the AI2D dataset
-AI2D_RST_data = AI2D_RST(ids, labels, layers=['grouping'], img_path=img_path, 
-						ai2d_path=ai2d_path, ai2d_rst_path=ai2d_rst_path)
+AI2D_RST_data = AI2D_RST(ids, labels, layers=['grouping'], img_path=img_path,
+                         ai2d_path=ai2d_path, ai2d_rst_path=ai2d_rst_path)
 
 # Define training (90%) and validation (10%) split sizes
 train_len = int(0.90 * len(AI2D_RST_data))
@@ -175,8 +178,9 @@ valid_loader = data.DataLoader(dataset=AI2D_RST_valid,
                                collate_fn=create_batch(device),
                                num_workers=0)
 
-# Initialize model with a 10-dimensional input feature vector and 64 neurons in the hidden
-# layer. The number of classes is retrieved from the label encoder.
+# Initialize model with a 10-dimensional input feature vector and 64 neurons
+# in the hidden layer. The number of classes is retrieved from the label
+# encoder.
 model = Classifier(10, 64, len(label_enc.classes_))
 
 # Set up loss function with class weights and the optimizer.
@@ -190,23 +194,23 @@ model.train()
 epoch_losses = []
 
 for i, epoch in enumerate(range(100)):
-    
+
     epoch_loss = 0
-    
+
     # Iterate over batches of training data
     for iter, (bg, label) in enumerate(train_loader):
 
-		# Feed data to the model and retrieve output
+        # Feed data to the model and retrieve output
         prediction = model(bg, bg.ndata['features'].float())
-        
+
         # Calculate loss
         loss = loss_func(prediction, label)
-        
+
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
         epoch_loss += loss.detach().item()
-    
+
     epoch_loss /= (iter + 1)
     print('Epoch {}, loss {:.4f}'.format(epoch, epoch_loss))
     epoch_losses.append(epoch_loss)
@@ -216,23 +220,22 @@ model.eval()
 
 # Loop over the validation loader
 for test_X, test_Y in valid_loader:
-    
     test_Y = th.tensor(test_Y).float().view(-1, 1)
-    
+
     probs_Y = th.softmax(model(test_X, test_X.ndata['features'].float()), 1)
-    
+
     sampled_Y = th.multinomial(probs_Y, 1)
-    
+
     argmax_Y = th.max(probs_Y, 1)[1].view(-1, 1)
 
     # Get labels for predicted classes
     int_labels = np.unique(test_Y.numpy().astype(np.int32))
     str_labels = label_enc.inverse_transform(int_labels)
-    
+
     print('Accuracy of sampled predictions on the test set: {:.4f}%'.format(
         (test_Y == sampled_Y.float()).sum().item() / len(test_Y) * 100))
     print('Accuracy of argmax predictions on the test set: {:4f}%'.format(
         (test_Y == argmax_Y.float()).sum().item() / len(test_Y) * 100))
 
-    print(classification_report(test_Y, argmax_Y, labels=int_labels, 
-    	  target_names=str_labels))
+    print(classification_report(test_Y, argmax_Y, labels=int_labels,
+                                target_names=str_labels))
