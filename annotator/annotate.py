@@ -12,6 +12,8 @@ Arguments:
     -i/--images: Path to the directory with the AI2D diagram images.
     -o/--output: Path to the output file, in which the resulting annotation is
                  stored.
+
+Optional arguments:
     -r/--review: Optional argument that activates review mode. This mode opens
                  each Diagram object marked as complete for editing.
     -dr/--disable_rst: Optional argument for disabling RST annotation.

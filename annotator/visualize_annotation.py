@@ -7,10 +7,14 @@ Usage:
     python visualize_annotation.py -a annotation.pkl -i images/
 
 Arguments:
-    -a/--annotation: Path to the pandas DataFrame containing annotation.
+    -a/--annotation: Path to the pandas DataFrame containing AI2D-RST annotation.
     -i/--images: Path to the directory containing the original AI2D images.
-    -s/--similar_to: An AI2D diagram ID (integer).
-    -o/--only: An AI2D diagram ID (integer).
+
+Optional arguments:
+    -s/--similar_to: An AI2D diagram ID (integer). Show examples similar to this diagram.
+    -c/--categories: Path to AI2D categories.json file.
+    -o/--only: An AI2D diagram ID (integer). Show this diagram only.
+    -e/--export: Save DOT graphs and screenshots for each diagram.
 
 Returns:
     Visualises the annotation for all layers and prints rhetorical relations,
@@ -44,11 +48,14 @@ ap.add_argument("-s", "--similar_to", required=False, type=int,
                 help="An AI2D diagram identifier as an integer (e.g. 1132). "
                      "Limits the visualisation to examples similar to this "
                      "diagram.")
+ap.add_argument("-c", "--categories", required=False,
+				help="Path to the AI2D categories.json file. Needed for option "
+				"-s/--similar_to.")
 ap.add_argument("-o", "--only", required=False, type=int,
                 help="An AI2D diagram identifier as an integer (e.g. 1132). "
                      "Shows this diagram only.")
 ap.add_argument("-e", "--export", required=False, action='store_true',
-                help="Export DOT graphs and screenshots for each graph.")
+                help="Export DOT graphs and screenshots for each diagram.")
 
 # Parse arguments
 args = vars(ap.parse_args())
@@ -76,7 +83,7 @@ if args['similar_to']:
     requested_id = str(args['similar_to']) + '.png'
 
     # Open the JSON file for AI2D categories
-    with open('data/categories.json') as f:
+    with open(args['categories']) as f:
 
             # Load category information
             categories = json.load(f)
@@ -135,7 +142,7 @@ for i, (ix, row) in enumerate(df.iterrows(), start=1):
 
     # Join with path to image directory with current filename
     image_path = os.path.join(images_path, row['image_name'])
-
+    
     # Print status message
     print("[INFO] Now processing row {}/{} ({}) ...".format(i,
                                                             len(df),
@@ -148,7 +155,7 @@ for i, (ix, row) in enumerate(df.iterrows(), start=1):
     if diagram is not None:
 
         # Visualize the layout segmentation
-        segmentation = draw_layout(diagram.image_filename,
+        segmentation = draw_layout(image_path,
                                    diagram.annotation,
                                    height=720,
                                    dpi=80)

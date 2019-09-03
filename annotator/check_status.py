@@ -2,7 +2,7 @@
 
 """
 This script loads a pandas DataFrame containing AI2D-RST annotation and
-prints out the status of each diagram in the file.
+prints out the annotation status (complete/incomplete) of each diagram in the file.
 
 Usage:
     python examine_annotation.py -a annotation.pkl

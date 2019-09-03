@@ -1,5 +1,22 @@
 # -*- coding: utf-8 -*-
 
+"""
+This script allows the user to extract the original AI2D annotation from JSON files and
+store it into a pandas DataFrame for processing using the AI2D-RST annotation tool.
+
+Usage:
+    python extract_full_annotation.py -a annotation/ -i images/ -o output.pkl
+    
+Arguments:
+    -a/--annotation: Path to the directory with the AI2D JSON files.
+    -i/--images: Path to the directory with the AI2D diagram images.
+    -o/--output: Path to the output file, in which the resulting annotation is
+                 stored.
+
+Returns:
+    A pandas DataFrame containing the AI2D annotation.
+"""
+
 from core import parse
 import argparse
 import os
@@ -9,9 +26,12 @@ import pandas as pd
 ap = argparse.ArgumentParser()
 
 # Define arguments
-ap.add_argument("-a", "--annotation", required=True)
-ap.add_argument("-i", "--images", required=True)
-ap.add_argument("-o", "--output", required=True)
+ap.add_argument("-a", "--annotation", required=True, 
+				help="Path to the diretory with AI2D JSON files.")
+ap.add_argument("-i", "--images", required=True,
+				help="Path to the directory with AI2D images.)
+ap.add_argument("-o", "--output", required=True,
+				help="Path to the file in which the extracted annotation is stored.)
 
 # Parse arguments
 args = vars(ap.parse_args())

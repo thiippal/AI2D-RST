@@ -1,8 +1,31 @@
+# -*- coding: utf-8 -*-
+
+"""
+This script allows the user to sample the AI2D-RST annotation, for instance, in order to
+measure agreement between annotators.
+
+Usage:
+    python sample_annotation.py -a annotation.pkl -o output.pkl -m rst -p 0.1
+    
+Arguments:
+    -a/--annotation: Path to a pandas DataFrame with the original annotation
+                     extracted from the AI2D dataset.
+    -o/--output: Path to the output file, in which the sampled annotation is stored.
+    -m/--mode: A string indicating the annotation layer which is to be sampled. Valid
+    		   values include 'grouping', 'macro', 'connectivity' and 'rst'.
+    -p/--p_sample: The percentage of annotations to sample as a float, e.g. to sample 10%
+    			   of the annotation, enter 0.1.	
+
+Returns:
+    A pandas DataFrame containing a Diagram object for each diagram.
+"""
+
 # Import packages
 import argparse
 import pandas as pd
 
 
+# Define a function for resolving RST relations through the discourse tree.
 def resolve_id(identifier, relations):
     """
     This function resolves the identifiers for recursive RST relations through
@@ -77,10 +100,16 @@ def resolve_id(identifier, relations):
 ap = argparse.ArgumentParser()
 
 # Define arguments
-ap.add_argument("-a", "--annotation", required=True)
-ap.add_argument("-o", "--output", required=True)
-ap.add_argument("-m", "--mode", required=True)
-ap.add_argument("-p", "--p_sample", required=True, type=float)
+ap.add_argument("-a", "--annotation", required=True,
+				help="Path to the pandas DataFrame with AI2D annotation.")
+ap.add_argument("-o", "--output", required=True,
+				help="Path to the file in which the sampled annotation is stored.")
+ap.add_argument("-m", "--mode", required=True,
+				help="A string indicating which annotation to sample. Valid values are: "
+				"'grouping', 'macro', 'connectivity' and 'rst'.")
+ap.add_argument("-p", "--p_sample", required=True, type=float,
+				help="The percentage of annotations to sample as a float, e.g. to sample "
+				"10% enter 0.1 as the value.")
 
 # Parse arguments
 args = vars(ap.parse_args())
