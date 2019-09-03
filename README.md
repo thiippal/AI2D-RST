@@ -21,9 +21,11 @@ Building on the layout segmentation in AI2D, the AI2D-RST corpus presents a mult
 
 `examples/`: Example visualisations used in this document.
 
+`guide/`: The annotation manual for AI2D-RST.
+
 `reliability/`: Scripts and data for measuring inter-annotator agreement.
 
-`utils/`: Various utilities and convenience functions for working with AI2D-RST.
+`utils/`: Convenience functions for working with AI2D-RST.
 
 ## Download the corpus
 
