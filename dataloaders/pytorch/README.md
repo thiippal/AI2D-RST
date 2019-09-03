@@ -5,6 +5,7 @@ This directory contains a data loader for [PyTorch](https://pytorch.org) and [De
 ## Directory structure
 
 | Directory or file | Description |
+| ----------------- | ----------- |
 | `dataloader.py` | Defines the AI2D-RST dataloader using PyTorch's DataLoader class. | 
 | `features.py` | Defines various functions for extracting features from the AI2D annotation. | 
 | `train_gcn.py` | Script for training a simple Graph Convolutional Network to classify diagrams according to their macro-groups. | 
