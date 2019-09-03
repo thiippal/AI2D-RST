@@ -29,7 +29,7 @@ Building on the layout segmentation in AI2D, the AI2D-RST corpus presents a mult
 
 `annotator/`: The in-house annotation tool used to create the AI2D-RST corpus.
 
-`dataloader/`: A data loader for PyTorch.
+`dataloader/pytorch/`: AI2D-RST data loader for PyTorch.
 
 `examples/`: Example visualisations used in this document.
 
