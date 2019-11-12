@@ -31,7 +31,8 @@ Building on the layout segmentation in AI2D, the AI2D-RST corpus presents a mult
 
 ## Download the corpus
 
-Click [here](http://www.helsinki.fi/~thiippal/data/ai2d-rst_v1.zip) to download the AI2D-RST dataset.
+Click [here](http://www.helsinki.fi/~thiippal/data/ai2d-rst_v1.zip) to download the AI2D-RST dataset. The AI2D-RST dataset is available with a [CC-BY-4.0 license](https://creativecommons.org/licenses/by/4.0/).
+
 ## Install the corpus
 
 1. Download the [Allen Institute for Artificial Intelligence Diagrams (AI2D) dataset](https://allenai.org/plato/diagram-understanding/).
