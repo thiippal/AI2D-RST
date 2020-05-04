@@ -51,7 +51,7 @@ bin_enc.fit(int_labels)
 
 # Create a dictionary with RST relation names and their one-hot labels by
 # zipping the label strings and their binary representations
-rst_enc = dict(zip(label_enc.classes_, bin_enc.transform(int_labels)))
+rst_enc = dict(zip(rst_list, bin_enc.transform(int_labels)))
 
 
 def create_graph(annotation, image, json, layers):
