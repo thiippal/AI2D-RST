@@ -7,7 +7,7 @@ This directory contains a [PyTorch](https://pytorch.org) DataLoader for the AI2D
 | Directory or file | Description |
 | ----------------- | ----------- |
 | `ai2d_rst.py` | Defines a PyTorch DataLoader for AI2D-RST. | 
-| `train_gcn.py` | Script for training a simple Graph Convolutional Network to classify diagrams. |
+| `train_gcn.py` | Trains a simple Graph Convolutional Network to classify diagrams. |
 
 ## How to create a DataLoader for AI2D or AI2D-RST
 
