@@ -1,11 +1,11 @@
-# A data loader for PyTorch and Deep Graph Library
+# PyTorch DataLoaders for AI2D and AI2D-RST
 
-This directory contains a data loader for [PyTorch](https://pytorch.org) and [Deep Graph Library](https://www.dgl.ai) to facilitate the use of AI2D-RST dataset.
+This directory contains a [PyTorch](https://pytorch.org) DataLoader for the AI2D and AI2D-RST datasets that yield [Deep Graph Library](https://www.dgl.ai) and [NetworkX](https://networkx.org/) graphs.
 
 ## Directory structure
 
 | Directory or file | Description |
 | ----------------- | ----------- |
-| `dataloader.py` | Defines the AI2D-RST dataloader using PyTorch's DataLoader class. | 
-| `features.py` | Defines various functions for extracting features from the AI2D annotation. | 
-| `train_gcn.py` | Script for training a simple Graph Convolutional Network to classify diagrams according to their macro-groups. | 
+| `ai2d_rst.py` | Defines a PyTorch DataLoader for AI2D-RST. | 
+| `ai2d.py` | Defines a PyTorch DataLoader for AI2D. | 
+| `train_gcn.py` | Script for training a simple Graph Convolutional Network to classify diagrams. |
