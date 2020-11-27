@@ -2,7 +2,9 @@
 
 ## Description
 
-This repository contains resources related to AI2D-RST, a multimodal corpus of 1000 English-language diagrams that represent topics in primary school natural science, such as food webs, life cycles, moon phases and human physiology. The corpus is based on the [Allen Institute for Artificial Intelligence Diagrams (AI2D) dataset](https://allenai.org/plato/diagram-understanding/), a collection of diagrams with crowd-sourced descriptions. 
+This repository contains resources related to AI2D-RST, a multimodal corpus of 1000 English-language diagrams that represent topics in primary school natural science, such as food webs, life cycles, moon phases and human physiology. The corpus is based on the [Allen Institute for Artificial Intelligence Diagrams (AI2D) dataset](https://allenai.org/plato/diagram-understanding/), a collection of diagrams with crowd-sourced descriptions.
+
+For an open access publication in *Language Resources and Evaluation* that describes the corpus, [click here](https://doi.org/10.1007/s10579-020-09517-1).
 
 Building on the layout segmentation in AI2D, the AI2D-RST corpus presents a multi-layer annotation schema that provides a rich, graph-based description of diagram structure. The annotation was performed by trained experts. The data and its description are introduced below using a single diagram (#2185 in the corpus) as an example.
 
