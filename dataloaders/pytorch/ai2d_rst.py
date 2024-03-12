@@ -2,6 +2,7 @@
 
 # Import packages
 from collections import namedtuple
+from networkx.readwrite import json_graph
 from pathlib import Path
 from sklearn.preprocessing import LabelEncoder, LabelBinarizer
 from sklearn.utils.class_weight import compute_class_weight
@@ -41,8 +42,7 @@ node_dicts = {'grouping': {'imageConsts': np.array([0], dtype=np.int32),
                             'preparation': np.array([2], dtype=np.int32),
                             'joint': np.array([3], dtype=np.int32),
                             'elaboration': np.array([4], dtype=np.int32),
-                            'property-ascription': np.array([5],
-                                                            dtype=np.int32),
+                            'property-ascription': np.array([5], dtype=np.int32),
                             'list': np.array([6], dtype=np.int32),
                             'contrast': np.array([7], dtype=np.int32),
                             'circumstance': np.array([8], dtype=np.int32),
@@ -186,10 +186,12 @@ class AI2D_RST(data.Dataset):
         self._return_nx = False
 
         # Check if NetworkX graphs have been requested
-        if kwargs and kwargs['nx']:
+        if kwargs and 'nx' in kwargs:
 
             # Set the flag for returning NetworkX graphs to True
-            self._return_nx = True
+            if kwargs['nx']:
+            
+                self._return_nx = True
 
         # Check if node type information should be added to node features
         if kwargs and kwargs['node_types']:
@@ -258,12 +260,10 @@ class AI2D_RST(data.Dataset):
         # Do the same for DGLHeteroGraphs (discourse)
         if 'discourse' in layers and not self._return_nx:
 
-            node_list = np.concatenate(np.asarray([x.ntypes for x in
-                                                   self.diagrams]))
+            node_list = np.concatenate([np.asarray(x.ntypes) for x in self.diagrams])
             self.n_node_classes = len(np.unique(node_list))
 
-            edge_list = np.concatenate(np.asarray([x.etypes for x in
-                                                   self.diagrams]))
+            edge_list = np.concatenate([np.asarray(x.etypes) for x in self.diagrams])
             self.n_edge_classes = len(np.unique(edge_list))
 
     @staticmethod
@@ -298,30 +298,35 @@ class AI2D_RST(data.Dataset):
         Returns:
             Updates the edge attributes for graph.
         """
-
         # Set up a placeholder dictionary for updated edge features
         upd_edge_feats = {}
 
-        # Get edges in the graph
-        edges = graph.edges(data=True)
+        if type(graph) == nx.classes.multidigraph.MultiDiGraph:
 
-        # Loop over the edges
-        for src, dst, features in edges:
+            for src, dst, key in graph.edges:
 
-            # Skip edges that already have numerical labels
-            if type(features['kind']) == np.ndarray:
+                if type(graph.get_edge_data(src, dst, key=key)['kind']) == np.ndarray:
 
-                # Use original features and continue
-                upd_edge_feats[src, dst] = features
+                    upd_edge_feats[src, dst, key] = graph.get_edge_data(src, dst, key=key)['kind']
 
-                continue
+                    continue
 
-            # Encode edge type information using numerical labels and
-            # store into dictionary.
-            upd_edge_feats[src, dst] = {'kind': e_dict[features['kind']]}
+                upd_edge_feats[src, dst, key] = e_dict[graph.get_edge_data(src, dst, key=key)['kind']]
+
+        if type(graph) == nx.classes.graph.Graph:
+
+            for src, dst in graph.edges:
+
+                if type(graph.get_edge_data(src, dst)['kind']) == np.ndarray:
+
+                    upd_edge_feats[src, dst] = graph.get_edge_data(src, dst)['kind']
+
+                    continue
+
+                upd_edge_feats[src, dst] = e_dict[graph.get_edge_data(src, dst)['kind']]
 
         # Set updated edge attributes
-        nx.set_edge_attributes(graph, upd_edge_feats)
+        nx.set_edge_attributes(graph, upd_edge_feats, 'kind')
 
     @staticmethod
     def _resolve_grouping_node(group_node, group_tree, group_graph,
@@ -445,58 +450,6 @@ class AI2D_RST(data.Dataset):
 
                 # Append diagram to list of diagrams
                 self.diagrams.append(diagram)
-
-    # A function for parsing annotation from AI2D-RST JSON files
-    @staticmethod
-    def _parse_ai2d_rst_json(data):
-        """"
-        Creates NetworkX graphs from dictionaries loaded from AI2D-RST JSON.
-
-        Parameters:
-            data: A dictionary loaded from AI2D-RST JSON.
-
-        Returns:
-            Grouping, connectivity and discourse graphs as NetworkX graphs
-        """
-        # Separate dictionaries for each layer from the JSON dictionary
-        grouping_dict_from_json = data['grouping']
-        conn_dict_from_json = data['connectivity']
-        rst_dict_from_json = data['rst']
-
-        # Create the grouping graph using the nx.jit_graph function
-        grouping_graph = nx.jit_graph(grouping_dict_from_json,
-                                      create_using=nx.DiGraph())
-
-        # Check if connectivity annotation exists
-        if conn_dict_from_json is not None:
-
-            # Create connectivity graph manually
-            connectivity_graph = nx.DiGraph()
-
-            # Load nodes and edges
-            nodes = conn_dict_from_json['nodes']
-            edges = conn_dict_from_json['edges']
-
-            # Add nodes manually to the connectivity graph
-            for node in nodes:
-
-                connectivity_graph.add_node(node[0], kind=node[1]['kind'])
-
-            # Add edges manually to the connectivity graph
-            for e in edges:
-
-                connectivity_graph.add_edge(e[0], e[1], kind=e[2]['kind'])
-
-        else:
-
-            connectivity_graph = None
-
-        # Create the RST graph using the nx.jit_graph function
-        rst_graph = nx.jit_graph(rst_dict_from_json,
-                                 create_using=nx.DiGraph())
-
-        # Return all three graphs
-        return grouping_graph, connectivity_graph, rst_graph
 
     # A function for parsing AI2D layout segmentation annotation
     def _parse_ai2d_layout(self, ai2d_ann, h, w, n_pix, node_type, node_id):
@@ -749,8 +702,9 @@ class AI2D_RST(data.Dataset):
             if graphs['connectivity'] is not None:
 
                 # Use nx.compose() to combine the grouping and connectivity
-                # graphs
-                graph = nx.compose(graphs['connectivity'], graphs['grouping'])
+                # graphs. This function requires casting the grouping graph (nx.Graph)
+                # into a nx.MultiDiGraph.
+                graph = nx.compose(graphs['connectivity'], nx.MultiDiGraph(graphs['grouping']))
 
             # Encode edge type information using numerical labels
             self._encode_edges(graph, self.edge_dict['connectivity'])
@@ -982,7 +936,7 @@ class AI2D_RST(data.Dataset):
         if layers == 'grouping':
 
             # Build grouping graph
-            graphs = {'grouping': self._parse_ai2d_rst_json(rst_ann)[0]}
+            graphs = {'grouping': json_graph.node_link_graph(rst_ann['grouping'])}
 
             # Extract features from the JSON annotation and add this to graph
             graphs = self._extract_features(graphs,
@@ -1000,7 +954,7 @@ class AI2D_RST(data.Dataset):
                                                              first_label=0)
 
             # Convert NetworkX graph into a DGL graph object
-            g = dgl.from_networkx(group_graph,
+            g = dgl.from_networkx(group_graph.to_directed(),
                                   node_attrs=['kind', 'features'],
                                   edge_attrs=['kind'])
 
@@ -1011,8 +965,9 @@ class AI2D_RST(data.Dataset):
         if layers == 'grouping+connectivity':
 
             # Build grouping and connectivity graphs
-            gc_graphs = {'grouping': self._parse_ai2d_rst_json(rst_ann)[0],
-                         'connectivity': self._parse_ai2d_rst_json(rst_ann)[1]}
+            gc_graphs = {'grouping': json_graph.node_link_graph(rst_ann['grouping']),
+                         'connectivity': json_graph.node_link_graph(rst_ann['connectivity'])
+                         if rst_ann['connectivity'] is not None else None}
 
             # Extract features from the JSON annotation and add them to graphs
             gc_graphs = self._extract_features(gc_graphs,
@@ -1030,7 +985,7 @@ class AI2D_RST(data.Dataset):
                                                           first_label=0)
 
             # Convert NetworkX graph into a DGL graph object
-            gc = dgl.from_networkx(gc_graph,
+            gc = dgl.from_networkx(gc_graph.to_directed(),
                                    node_attrs=['kind', 'features'],
                                    edge_attrs=['kind'])
 
@@ -1041,8 +996,9 @@ class AI2D_RST(data.Dataset):
         if layers == 'connectivity':
 
             # Build grouping and connectivity graphs
-            c_graph = {'grouping': self._parse_ai2d_rst_json(rst_ann)[0],
-                       'connectivity': self._parse_ai2d_rst_json(rst_ann)[1]}
+            c_graph = {'grouping': json_graph.node_link_graph(rst_ann['grouping']),
+                       'connectivity': json_graph.node_link_graph(rst_ann['connectivity'])
+                       if rst_ann['connectivity'] is not None else None}
 
             # Check that connectivity annotation exists for current diagram
             if c_graph['connectivity'] is None:
@@ -1076,8 +1032,8 @@ class AI2D_RST(data.Dataset):
         if layers == 'discourse':
 
             # Build grouping and discourse graphs
-            graphs = {'grouping': self._parse_ai2d_rst_json(rst_ann)[0],
-                      'discourse': self._parse_ai2d_rst_json(rst_ann)[2]}
+            graphs = {'grouping': json_graph.node_link_graph(rst_ann['grouping']),
+                      'discourse': json_graph.node_link_graph(rst_ann['rst'])}
 
             # Extract features from the JSON annotation and update the graphs
             # dictionary

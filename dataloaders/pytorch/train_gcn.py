@@ -16,11 +16,11 @@ import torch.optim as optim
 
 
 # Initialize the AI2D-RST dataset
-dataset = AI2D_RST("../../../ai2d/categories_ai2d-rst_fine.json",
+dataset = AI2D_RST("../../../ai2d/categories_ai2d-rst_coarse.json",
                    "../../../ai2d/images/",
                    "../../../ai2d/annotations/",
-                   "../../../ai2d/ai2d-rst/",
-                   layers='grouping'
+                   "../../../final_repo/utils/ai2d-rst_nld",
+                   layers='discourse'
                    )
 
 
@@ -119,8 +119,8 @@ def evaluate(model, loader):
 
 # Build GCN
 model = GC_GCN(in_dim=4,
-               out_dim=10,
-               n_layers=2,
+               out_dim=8,
+               n_layers=3,
                n_classes=dataset.n_classes
                )
 
@@ -128,13 +128,15 @@ model = GC_GCN(in_dim=4,
 loss_func = nn.CrossEntropyLoss(weight=dataset.class_weights)
 
 # Configure optimizer
-optimizer = optim.Adam(model.parameters(), lr=0.01, weight_decay=0.00001)
+optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=0.00001)
 
 # Set the model to training mode
 model.train()
 
 # Define training, validation and testing splits at the beginning of each trial
-train, valid = data.random_split(dataset, [800, 200])
+train, valid = data.random_split(dataset, [int(len(dataset) * 0.8), len(dataset) - int(len(dataset) * 0.8)])
+
+print(f"[INFO] Using {len(train)} samples for training and {len(valid)} for testing.")
 
 # Initialize dataloaders for training and validation data
 train_loader = data.DataLoader(dataset=train,
