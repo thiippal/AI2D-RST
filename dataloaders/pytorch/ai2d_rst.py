@@ -260,11 +260,11 @@ class AI2D_RST(data.Dataset):
         # Do the same for DGLHeteroGraphs (discourse)
         if 'discourse' in layers and not self._return_nx:
 
-            node_list = np.concatenate([np.asarray(x.ntypes) for x in self.diagrams])
-            self.n_node_classes = len(np.unique(node_list))
+            node_list = set(map(tuple, [x.ntypes for x in self.diagrams]))
+            self.n_node_classes = len(node_list)
 
-            edge_list = np.concatenate([np.asarray(x.etypes) for x in self.diagrams])
-            self.n_edge_classes = len(np.unique(edge_list))
+            edge_list = set(map(tuple, [x.etypes for x in self.diagrams]))
+            self.n_edge_classes = len(edge_list)
 
     @staticmethod
     def _load_annotation(json_path):

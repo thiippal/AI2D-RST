@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
+This file defines a simple graph convolutional network classifies diagrams into the
+categories defined in AI2D-RST using the graph-based representations.
 """
 
 # Import libraries
@@ -16,18 +18,18 @@ import torch.optim as optim
 
 
 # Initialize the AI2D-RST dataset
-dataset = AI2D_RST("../../../ai2d/categories_ai2d-rst_coarse.json",
+dataset = AI2D_RST("../../../ai2d/categories_ai2d-rst.json",
                    "../../../ai2d/images/",
                    "../../../ai2d/annotations/",
                    "../../../final_repo/utils/ai2d-rst_nld",
-                   layers='discourse'
+                   layers='grouping+connectivity'
                    )
 
 
 # Define a Graph Convolutional Network (GCN) for graph classification
-class GC_GCN(nn.Module):
+class GCN(nn.Module):
     def __init__(self, in_dim, out_dim, n_classes, n_layers):
-        super(GC_GCN, self).__init__()
+        super(GCN, self).__init__()
 
         # Make key attributes available to the forward pass
         self.n_layers = n_layers
@@ -118,11 +120,11 @@ def evaluate(model, loader):
 
 
 # Build GCN
-model = GC_GCN(in_dim=4,
-               out_dim=8,
-               n_layers=3,
-               n_classes=dataset.n_classes
-               )
+model = GCN(in_dim=4,
+            out_dim=6,
+            n_layers=2,
+            n_classes=dataset.n_classes
+            )
 
 # Initialize weighted loss function
 loss_func = nn.CrossEntropyLoss(weight=dataset.class_weights)
@@ -140,7 +142,7 @@ print(f"[INFO] Using {len(train)} samples for training and {len(valid)} for test
 
 # Initialize dataloaders for training and validation data
 train_loader = data.DataLoader(dataset=train,
-                               batch_size=2,
+                               batch_size=32,
                                shuffle=True,
                                collate_fn=create_batch('cpu'),
                                num_workers=0
@@ -154,8 +156,8 @@ valid_loader = data.DataLoader(dataset=valid,
                                num_workers=0
                                )
 
-# Begin training loop; train for 100 epochs
-for i in range(0, 100):
+# Begin training loop; train for 1000 epochs
+for i in range(0, 1000):
 
     # Loop over batched graphs from the training data loader
     for bg, labels in train_loader:

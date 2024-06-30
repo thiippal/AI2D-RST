@@ -1,6 +1,6 @@
 # PyTorch DataLoader for AI2D-RST
 
-This directory contains a [PyTorch](https://pytorch.org) DataLoader for the AI2D-RST dataset that yield [Deep Graph Library](https://www.dgl.ai) and [NetworkX](https://networkx.org/) graphs.
+This directory contains a [PyTorch](https://pytorch.org) DataLoader for the AI2D-RST dataset that yields [Deep Graph Library](https://www.dgl.ai) and [NetworkX](https://networkx.org/) graphs.
 
 ## Directory structure
 
@@ -18,8 +18,8 @@ dataset = AI2D_RST(cat_path="path_to_categories.json",
                    img_path="path_to_ai2d_images/",
                    orig_json_path="path_to_ai2d_annotation/",
                    rst_json_path="path_to_ai2d_rst_annotation/",
-                   layers='discourse',
-                   nx=True,
+                   layers='grouping',
+                   nx=False,
                    node_types=True,
                    smooth=False
                    )
