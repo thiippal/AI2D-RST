@@ -1,16 +1,37 @@
+# -*- coding: utf-8 -*-
+
 from pathlib import Path
 import argparse
 import json
 import networkx as nx
 
+"""
+This script converts AI2D-RST annotations stored in the JIT format to the node-link format.
+
+Running the script requires three arguments:
+
+    -a / --ai2d: Path to directory containing AI2D JSON files.
+    -r / --ai2d_rst: Path to the directory containing AI2D-RST JSON files.
+    -c / --cats: Path to the directory containing AI2D and AI2D-RST category JSON files.
+    
+Example:
+
+    python convert_jit_json.py -a ai2d/annotations / -r ai2d/ai2d-rst -c ai2d
+
+The output is placed into a directory named 'ai2d-rst_nld'.
+
+Running the script requires NetworkX 2.5. You can install this version of NetworkX using the 
+command "pip install networkx==2.5".
+"""
+
 
 def convert_jit_to_node_link(json_file):
     """
     This function converts AI2D-RST annotations stored as JIT JSON into a node-link JSON format.
-    This conversion is necessary, as JIT JSON support was dropped in NetworkX 3.0.
+    This conversion is necessary, because support for JIT JSON was dropped in NetworkX 3.0.
 
     Args:
-        json_file: Path to a JSON file containing AI2D-RST annotations.
+        json_file: Path to a JSON file containing AI2D-RST annotations in JIT format.
 
     Returns:
         Writes a file to disk containing the annotations in a node-link JSON format.
@@ -48,31 +69,6 @@ def convert_jit_to_node_link(json_file):
 
         # Create the discourse structure (RST) graph
         rst = nx.jit_graph(data['rst'], create_using=nx.DiGraph())
-
-        # Enhance grouping graph with segmentation information from AI2D
-        with open(Path(ai2d_dir) / json_file.name) as ai2d_f:
-
-            # Load AI2D annotations
-            ai2d_data = json.load(ai2d_f)
-
-            # Get and filter node types
-            node_types = {k: v for k, v in nx.get_node_attributes(grouping, 'kind').items()
-                          if v in ['text', 'blobs', 'arrows']}
-
-            # Unpack and merge the dictionaries with bounding boxes for arrows, text and blobs
-            bboxes = {**ai2d_data['arrows'], **ai2d_data['text'], **ai2d_data['blobs']}
-
-            # Get bounding box for each node
-            for n in node_types:
-
-                try:
-                    bbox = bboxes[n]['rectangle']
-
-                except KeyError:
-                    bbox = bboxes[n]['polygon']
-
-                # Store the bounding box under the attribute 'bbox' in the grouping graph
-                grouping.nodes[n]['bbox'] = bbox
 
         # Add information about AI2D and AI2D-RST categories to the graph
         try:
